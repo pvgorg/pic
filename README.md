@@ -15,8 +15,13 @@ $ pkg install python3
 
 $ git clone https://github.com/PvGoRg/pic.git
 
+
 $ cd pic 
 
+
 $ pip3 install telethon 
+
                                                              $ chmod +x VirusX.py
 $ python3 alireza.py
+
+#good luck
