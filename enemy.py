@@ -1,118 +1,98 @@
-from telethon import TelegramClient , events
-from os import listdir as L
-from json import load,dump
-from random import choice as C
+#!/usr/bin/python3
 
-api_id = 12701321 # آی پی آی آیدی بزارید
-api_hash = "83995b97cd109d02c1ead50c9f6f5605" # آی پی آی هش بزارید
-with TelegramClient('sjsjbsbs', api_id, api_hash) as client:
-   client.send_message('me', '✅ با موفقیت سلف روی اکانت شما ران شد میتوانید با ارسال پیام\n`Help`\nکامند های ربات رو دریافت کنید با تشکر سازنده ربات آراز\n\n🆔 ')
-   print(client.download_profile_photo('me'))
+from telethon import TelegramClient, events
+from os import listdir
+from json import load, dump
+from random import choice
+import asyncio
 
-AdminBot = 1502490631#ایدی عددی ادمین
+api_id = 12701321 #Edit
+api_hash = "83995b97cd109d02c1ead50c9f6f5605" #Edit
+client = TelegramClient('Atakeri', api_id, api_hash)
 
+async def main():
+    await client.start()
+    await client.send_message('me', '✅ Successfully ran the bot on your account. You can send `Help` to receive the bot commands. Thank you, dev Alireza.\n\n🆔 @La_shy')
+    print(await client.download_profile_photo('me'))
+
+AdminBot = 5076735181 #Edit
 foshall_list = []
+enemyall_list = []
 
-
-@client.on(events.NewMessage(pattern=r"AddFosh (.*)" , from_users=AdminBot))
+@client.on(events.NewMessage(pattern=r"AddFosh (.*)", from_users=AdminBot))
 async def add_name(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
-    xxx = (input_str)
-    if (xxx) in foshall_list:
-        await event.edit(f"**Fosh ( {xxx} ) In Fosh Listed . . . !**")
+    if input_str in foshall_list:
+        await event.edit(f"**Fosh ( {input_str} ) is already in the list!**")
     else:
-        try:
-            foshall_list.append(xxx)
-            await event.edit(f"**Fosh ( {xxx} ) Added In Fosh List . . . !**")
-        except:
-            await event.edit("**No Invalid . . . !**")
+        foshall_list.append(input_str)
+        await event.edit(f"**Fosh ( {input_str} ) added to the list!**")
 
-@client.on(events.NewMessage(pattern=r"DelFosh (.*)" , from_users=AdminBot))
+@client.on(events.NewMessage(pattern=r"DelFosh (.*)", from_users=AdminBot))
 async def del_name(event):
     if event.fwd_from:
         return
     input_str = event.pattern_match.group(1)
-    xxx = (input_str)
-    if (xxx) not in foshall_list:
-        await event.edit(f"**Fosh ( {xxx} ) Not In Fosh Listed . . . !**")
+    if input_str not in foshall_list:
+        await event.edit(f"**Fosh ( {input_str} ) is not in the list!**")
     else:
-        try:
-            foshall_list.remove(xxx)
-            await event.edit(f"**Fosh ( {xxx} ) Removed In Fosh List . . . !**")
-        except:
-            await event.edit("**No Invalid . . . !**")
+        foshall_list.remove(input_str)
+        await event.edit(f"**Fosh ( {input_str} ) removed from the list!**")
 
 @client.on(events.NewMessage())
 async def clean_name(event):
-    text = (event.raw_text)
-    if (text == "ClearFosh" and event.sender_id == AdminBot):
-        if foshall_list == []:
-            await event.edit("**Fosh List Has Been Empty . . . !**")
+    if event.raw_text == "ClearFosh" and event.sender_id == AdminBot:
+        if not foshall_list:
+            await event.edit("**Fosh List is already empty!**")
         else:
             foshall_list.clear()
-            await event.edit("**Fosh List Has Been Cleared . . . !**")
-            
-        
+            await event.edit("**Fosh List has been cleared!**")
+
 @client.on(events.ChatAction)
 async def leftMember(event):
     if event.user_joined:
-        await event.reply("Welcome To The Group !\nMy Self Creator : Alireza Wolf")
+        await event.reply("Welcome to the group!\nCreator Channel Atakeri")
 
 @client.on(events.NewMessage())
 async def timebio_on(event):
-    text = (event.raw_text)
-    if (text == "Help" and event.sender_id == AdminBot):
-        await event.edit("**Welcome To Enemy Help !\n\nتوجه : \nبرای افزودن دشمن حداقل باید یک عدد فحش اضافه کنید نکنید چیزی نمیگه میتونید بجای فحش قلب هم اضافه کنی بجای فحش قلب بده در آینده آپدیت میشود هم قلب دار هم دشمن اضافه میشود!\n\n برای افزودن دشمن (هر پیامی بده ریپلای میکنه فحش میده) : \n `SetEnemy` (Reply)\n برای در آوردن از قسمت دشمن : \n `DelEnemy` (Reply) \nبرای پاک کردن کل دشمنان : \n `ClearEnemy`\nتنظیم کردن فحش جدید : \n `AddFosh` (Text) \n برای پاک کردن فحش : \n `DelFosh` (Text) \n برای پاک کردن کل لیست فحش : \n `ClearFosh`\n\nDeveloper : Wolf**")
-        
+    if event.raw_text == "Help" and event.sender_id == AdminBot:
+        await event.edit("**Welcome to Enemy Help!**\n\n**Instructions:**\nTo add an enemy, you must add at least one insult. You can also add a heart instead of an insult. Future updates will allow both hearts and enemies to be added!\n\nTo add an enemy (reply to a message): `SetEnemy`\nTo remove an enemy: `DelEnemy`\nTo clear all enemies: `ClearEnemy`\nTo set a new insult: `AddFosh (Text)`\nTo remove an insult: `DelFosh (Text)`\nTo clear all insults: `ClearFosh`\n\n**Dev : @La_shy**")
+
 @client.on(events.NewMessage(from_users=AdminBot))
-async def _(event):
+async def set_enemy(event):
     if event.raw_text.lower() == "setenemy":
-        chat = await event.get_chat()
         replied = await event.get_reply_message()
-        sender = replied.sender
-        xxx = int("{}".format(sender.id))
-        if int(xxx) in enemyall_list:
-            await event.edit("**User Has Already Enemy !**".format(sender.first_name , sender.id))
-        else:
-            try:
-                enemyall_list.append(int(xxx))
-                await event.edit("**User Has Enemy Seted**".format(sender.first_name , sender.id))
-            except:
-                await event.edit("**No Invalid . . . !**")
+        if replied:
+            sender_id = replied.sender.id
+            if sender_id in enemyall_list:
+                await event.edit("**User is already an enemy!**")
+            else:
+                enemyall_list.append(sender_id)
+                await event.edit("**User has been set as an enemy!**")
     elif event.raw_text.lower() == "delenemy":
-        chat = await event.get_chat()
         replied = await event.get_reply_message()
-        sender = replied.sender
-        xxx = int("{}".format(sender.id))
-        if int(xxx) not in enemyall_list:
-            await event.edit("**User Has Not Enemy**".format(sender.first_name , sender.id))
-        else:
-            try:
-                enemyall_list.remove(int(xxx))
-                await event.edit("**User Has Delete Enemy**".format(sender.first_name , sender.id))
-            except:
-                await event.edit("**No Invalid . . . !**")
+        if replied:
+            sender_id = replied.sender.id
+            if sender_id not in enemyall_list:
+                await event.edit("**User is not an enemy!**")
+            else:
+                enemyall_list.remove(sender_id)
+                await event.edit("**User has been removed from enemies!**")
+
 @client.on(events.NewMessage())
-async def clean_name(event):
-    text = (event.raw_text)
-    if (text == "ClearEnemy" and event.sender_id == AdminBot):
-        if enemyall_list == []:
-            await event.edit("**Enemy List Has Been Empty . . . !**")
+async def clear_enemy(event):
+    if event.raw_text == "ClearEnemy" and event.sender_id == AdminBot:
+        if not enemyall_list:
+            await event.edit("**Enemy List is already empty!**")
         else:
             enemyall_list.clear()
-            await event.edit("**Enemy List Has Been Cleared . . . !**")
-                
+            await event.edit("**Enemy List has been cleared!**")
 
 @client.on(events.NewMessage)
 async def enemy(event):
     if event.sender_id in enemyall_list:
-        await event.reply(C(foshall_list))
-                
-        
-        
-        
-client.start()
-client.run_until_disconnected()
-asyncio.get_event_loop().run_forever()
+        await event.reply(choice(foshall_list))
+
+asyncio.run(main())
