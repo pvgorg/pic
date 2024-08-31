@@ -6,8 +6,8 @@ from json import load, dump
 from random import choice
 import asyncio
 
-api_id = 12701321 #Edit
-api_hash = "83995b97cd109d02c1ead50c9f6f5605" #Edit
+api_id = 25817106 #Edit
+api_hash = "2991b6efb8f4c2debe13e5948ce9c9cd" #Edit
 client = TelegramClient('Atakeri', api_id, api_hash)
 
 async def main():
@@ -15,7 +15,7 @@ async def main():
     await client.send_message('me', '✅ Successfully ran the bot on your account. You can send `Help` to receive the bot commands. Thank you, dev Alireza.\n\n🆔 @La_shy')
     print(await client.download_profile_photo('me'))
 
-AdminBot = 5076735181 #Edit
+AdminBot = 1502490631 #Edit
 foshall_list = []
 enemyall_list = []
 
